@@ -1,10 +1,14 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+import TheTimeline from '@/components/TheTimeline.vue';
 </script>
 
 <template>
-  <RouterView />
-</template>
+  <div class="flex flex-col h-screen">
+    <div class="border grow">
+      <RouterView />
+    </div>
 
-<style scoped>
-</style>
+    <TheTimeline />
+  </div>
+</template>
