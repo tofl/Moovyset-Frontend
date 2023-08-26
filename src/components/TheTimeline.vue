@@ -5,7 +5,7 @@
       v-for="decade in decades()"
       :key="decade"
       :id="decade"
-      :class="{ 'font-bold bottom-0.5': decade === store.decade }"
+      :class="{ 'font-bold bottom-0.5': decade === movies.decade }"
       @click="changeDecade(decade)"
     >
       {{ decade }}
@@ -17,7 +17,7 @@
 import { onMounted, ref } from 'vue';
 import { useMoviesStore } from '@/stores/movies.js';
 
-const store = useMoviesStore();
+const movies = useMoviesStore();
 
 const decades = () => {
   const y = [];
@@ -26,16 +26,17 @@ const decades = () => {
 };
 
 const changeDecade = (e) => {
-  store.decade = e;
-  store.from = 0;
-  store.movies = [];
-  store.fetchMovies();
+  movies.decade = e;
+  movies.from = 0;
+  movies.movies = [];
+  movies.fetchMovies();
   // TODO return to homepage if necessary
 };
 
-store.decade = ref(decades()[Math.floor(Math.random() * decades().length)]);
+movies.decade = ref(decades()[Math.floor(Math.random() * decades().length)]);
 
 onMounted(() => {
-  document.getElementById(store.decade).scrollIntoView();
+  document.getElementById(movies.decade).scrollIntoView();
+  movies.fetchMovies();
 });
 </script>

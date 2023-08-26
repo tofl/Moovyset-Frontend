@@ -13,7 +13,7 @@ export const useMoviesStore = defineStore('movies', {
                 `${import.meta.env.VITE_API_URL}/movies?from=${this.from}&count=10&decade=${this.decade}`,
             );
             const body = await response.json();
-            this.movies.push(body);
+            this.movies.push(...body);
         },
     },
 });
