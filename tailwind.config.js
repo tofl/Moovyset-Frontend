@@ -1,3 +1,5 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -5,7 +7,14 @@ module.exports = {
     './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'main-dark': '#000930',
+      },
+      fontFamily: {
+        sans: ['Familjen Grotesk', ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
   plugins: [],
 }

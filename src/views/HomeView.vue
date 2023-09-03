@@ -1,40 +1,47 @@
 <template>
   <div
-    class="flex bg-amber-200 overflow-hidden min-h-full touch-none"
+    class="flex overflow-hidden min-h-full touch-none"
     ref="movieView"
     @wheel="scroll"
     @touchmove="touchMove"
     @touchend="touchEnd"
   >
     <div
-      class="min-w-full"
+      class="flex flex-col min-w-full"
       v-for="movie in movies.movies"
       :key="movie.slug"
     >
-      {{ movie.name }}
+      <TheMovie :movie="movie" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useMoviesStore } from '@/stores/movies.js';
+import TheMovie from '@/components/TheMovie.vue';
 
 const movies = useMoviesStore();
 const movieView = ref(null);
-let elementInViewPort = ref(null);
+let elementInViewPort = null;
 
-// Find out which film is currently in view
-onMounted(() => {
-  const observer = new MutationObserver(() => {
-    for (const childDiv of movieView.value.children) {
-      const rect = childDiv.getBoundingClientRect();
-      if (rect.x < movieView.value.offsetWidth) {
-        elementInViewPort = childDiv;
-      }
+function setElementInViewport() {
+  for (const childDiv of movieView.value.children) {
+    const rect = childDiv.getBoundingClientRect();
+    if (rect.x < movieView.value.offsetWidth) {
+      elementInViewPort = childDiv;
     }
+  }
+}
+
+// Find out which movie is currently in view
+onMounted(async () => {
+  setElementInViewport();
+
+  const observer = new MutationObserver(() => {
+    setElementInViewport();
   });
-  observer.observe(movieView.value, { childList: true });
+  observer.observe(movieView.value, { childList: true, subtree: true });
 });
 
 function shiftScreen(direction) {
@@ -52,6 +59,10 @@ let scrollHasOccurred = false;
 let lastDeltaY = 0;
 let lastPositiveScrollEvent = Date.now() - 1000;
 function scroll(e) {
+  if (window.location.pathname !== '/') {
+    return;
+  }
+
   if (lastDeltaY - e.deltaY < 0 && !scrollHasOccurred && Date.now() - lastPositiveScrollEvent > 600) {
     const scrollDirection = e.deltaY < 0 ? 'left' : 'right';
     shiftScreen(scrollDirection);
@@ -75,7 +86,7 @@ let previousX = 0;
 
 // Shift the screen as the user swipes with his finger
 function touchMove(e) {
-  if (previousX !== 0) {
+  if (previousX !== 0 && window.location.pathname === '/') {
     const x = Math.floor(previousX - e.changedTouches[0].clientX);
     totalScroll += x;
     movieView.value.scrollLeft += x;
