@@ -19,7 +19,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useMoviesStore } from '@/stores/movies.js';
-import TheMovie from '@/components/TheMovie.vue';
+import TheMovie from '@/components/layout/TheMovie.vue';
 
 const movies = useMoviesStore();
 const movieView = ref(null);

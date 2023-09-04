@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       colors: {
         'main-dark': '#000930',
+        'main-red': '#E43A48',
       },
       fontFamily: {
         sans: ['Familjen Grotesk', ...defaultTheme.fontFamily.sans],

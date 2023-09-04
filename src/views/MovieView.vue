@@ -9,7 +9,7 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import TheMovie from '@/components/TheMovie.vue';
+import TheMovie from '@/components/layout/TheMovie.vue';
 
 const route = useRoute();
 const movie = ref(null);
