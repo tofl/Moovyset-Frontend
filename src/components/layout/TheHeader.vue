@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed w-full z-50 text-main-red/90 pt-1 pb-2 select-none backdrop-brightness-50 bg-main-dark/30">
+  <div class="fixed w-full z-40 text-main-red/90 pt-1 pb-2 select-none backdrop-brightness-50 bg-main-dark/30">
     <div class="container mx-auto px-4 sm:px-0">
       <div class="flex">
         <div class="grow-0">
@@ -16,23 +16,82 @@
             class="text-lg lg:text-xl sm:flex overflow-hidden sm:max-h-[400px] transition-[max-height] duration-500 ease-in-out"
             :class="{ 'max-h-[400px]': showMenu, 'max-h-0': !showMenu }"
           >
-            <div class="sm:mr-6">
-              <button class="cursor-pointer">Login</button>
+            <!-- Profile modal -->
+            <div
+              v-if="store.currentUser"
+              class="sm:mr-6"
+            >
+              <button
+                class="cursor-pointer"
+                @click="showProfile = true"
+              >
+                Profile
+              </button>
             </div>
 
-            <div>
-              <button class="cursor-pointer">Sign up</button>
+            <!-- Log out modal -->
+            <div
+              v-if="store.currentUser"
+              class="sm:mr-6"
+            >
+              <button
+                class="cursor-pointer"
+                @click="store.logout"
+              >
+                Log out
+              </button>
+            </div>
+
+            <!-- Login modal -->
+            <div
+              v-if="!store.currentUser"
+              class="sm:mr-6"
+            >
+              <button
+                class="cursor-pointer"
+                @click="showLogin = true"
+              >
+                Login
+              </button>
+            </div>
+
+            <!-- Sign up modal -->
+            <div v-if="!store.currentUser">
+              <button
+                class="cursor-pointer"
+                @click="showSignup = true"
+              >
+                Sign up
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <LoginWindow
+    :show="showLogin"
+    @close="showLogin = false"
+  />
+
+  <SignupWindow
+    :show="showSignup"
+    @close="showSignup = false"
+  />
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import TheBurger from '@/components/ui/TheBurger.vue';
+import LoginWindow from '@/components/layout/windows/LoginWindow.vue';
+import SignupWindow from '@/components/layout/windows/SignupWindow.vue';
+import { useMoviesStore } from '@/stores/movies.js';
 
 const showMenu = ref(false);
+const showLogin = ref(false);
+const showSignup = ref(false);
+const showProfile = ref(false);
+
+const store = useMoviesStore();
 </script>

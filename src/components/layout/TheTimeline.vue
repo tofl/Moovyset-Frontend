@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute bottom-0 z-50 w-screen h-10 text-center whitespace-nowrap overflow-x-scroll bg-main-dark text-white">
+  <div class="absolute bottom-0 z-40 w-screen h-10 text-center whitespace-nowrap overflow-x-scroll bg-main-dark text-main-red border-t border-gray-400">
     <div
       class="inline-block w-24 text-center leading-10 cursor-pointer relative hover:font-bold hover:bottom-0.5"
       v-for="decade in decades()"

@@ -5,6 +5,7 @@ export const useMoviesStore = defineStore('movies', {
         from: 0,
         decade: null,
         movies: [],
+        currentUser: null,
     }),
 
     actions: {
@@ -19,6 +20,68 @@ export const useMoviesStore = defineStore('movies', {
                     this.movies.push(m);
                 }
             });
+        },
+
+        async login(identifier, password) {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/login`,
+                {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ identifier, password }),
+                },
+            );
+            const body = await response.json();
+
+            if (response.status === 200) {
+                this.currentUser = body;
+                return;
+            }
+            return body;
+        },
+
+        async signup(firstname, lastname, username, email, password) {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/signup`,
+                {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ firstname, lastname, username, email, password }),
+                },
+            );
+            const body = await response.json();
+
+            if (response.status === 200) {
+                this.currentUser = body;
+                return;
+            }
+
+            return { status: response.status, errors: body };
+        },
+
+        async getCurrentUser() {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/me`,
+                {
+                    method: 'get',
+                    credentials: 'include',
+                }
+            );
+            const body = await response.text();
+            this.currentUser = body.length ? JSON.parse(body) : null;
+        },
+
+        async logout() {
+            await fetch(
+                `${import.meta.env.VITE_API_URL}/logout`,
+                {
+                    method: 'post',
+                    credentials: 'include',
+                },
+            );
+            this.currentUser = null;
         },
     },
 });
