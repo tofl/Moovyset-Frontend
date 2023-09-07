@@ -115,6 +115,9 @@
                 allowfullscreen
               ></iframe>
             </div>
+
+            <!-- Reviews -->
+            <TheReviews :movie-id="movie.id" />
           </div>
         </div>
 
@@ -138,7 +141,8 @@
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMoviesStore } from '@/stores/movies.js';
-import Chevron from '@/components/ui/Chevron.vue';
+import Chevron from '@/components/ui/TheChevron.vue';
+import TheReviews from '@/components/layout/TheReviews.vue';
 
 const props = defineProps(['movie']);
 const movie = props.movie;
