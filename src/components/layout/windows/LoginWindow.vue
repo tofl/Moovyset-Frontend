@@ -81,6 +81,8 @@ async function submit() {
 
   if (!error.value) {
     setTimeout(() => emit('close'), 2000);
+    identifier.value = '';
+    password.value = '';
   }
 }
 </script>

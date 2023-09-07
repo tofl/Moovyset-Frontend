@@ -146,6 +146,11 @@ async function submit() {
 
   if (!e) {
     setTimeout(() => emit('close'), 2000);
+    firstname.value = '';
+    lastname.value = '';
+    username.value = '';
+    email.value = '';
+    password.value = '';
   } else if (e.status === 400) {
     httpStatus.value = e.status;
     error.value = {};
