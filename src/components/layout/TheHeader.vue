@@ -30,10 +30,7 @@
             </div>
 
             <!-- Log out modal -->
-            <div
-              v-if="store.currentUser"
-              class="sm:mr-6"
-            >
+            <div v-if="store.currentUser">
               <button
                 class="cursor-pointer"
                 @click="store.logout"
@@ -49,7 +46,7 @@
             >
               <button
                 class="cursor-pointer"
-                @click="showLogin = true"
+                @click="store.showLogin = true"
               >
                 Login
               </button>
@@ -71,8 +68,8 @@
   </div>
 
   <LoginWindow
-    :show="showLogin"
-    @close="showLogin = false"
+    :show="store.showLogin"
+    @close="store.showLogin = false"
   />
 
   <SignupWindow
@@ -89,7 +86,6 @@ import SignupWindow from '@/components/layout/windows/SignupWindow.vue';
 import { useMoviesStore } from '@/stores/movies.js';
 
 const showMenu = ref(false);
-const showLogin = ref(false);
 const showSignup = ref(false);
 const showProfile = ref(false);
 
