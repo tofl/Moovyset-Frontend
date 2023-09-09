@@ -36,7 +36,11 @@
           >
             <div class="grow lg:w-3/4 lg:mx-auto overflow-y-scroll">
               <!-- [FREE] Movie name -->
-              <h2 class="px-6 lg:px-0 mb-4 text-4xl font-bold text-main-red">
+              <h2
+                class="px-6 lg:px-0 text-4xl font-bold text-main-red"
+                :class="{ 'mb-4': movie.freeToWatch, 'mb-2': !movie.freeToWatch, 'cursor-pointer': !isFullPage }"
+                @click="toggleFromMovieName"
+              >
                   <span
                     v-if="movie.freeToWatch"
                     class="mr-2 px-3 pb-0.5 bg-gray-100 text-main-dark font-bold relative bottom-1 text-xl rounded"
@@ -45,6 +49,17 @@
                 </span>
                 {{ props.movie.name }}
               </h2>
+              <h3
+                v-if="!movie.freeToWatch"
+                class="mb-4 underline"
+              >
+                <a
+                  :href="movie.purchase.url"
+                  target="_blank"
+                >
+                  Rent or buy
+                </a>
+              </h3>
 
               <!-- Full movie (free movie) - Mobile -->
               <div
@@ -179,6 +194,12 @@ async function toggleMoviePage() {
   } else {
     window.history.pushState({}, '', `/m/${props.movie.slug}`);
     isFullPage.value = true;
+  }
+}
+
+function toggleFromMovieName() {
+  if (!isFullPage.value) {
+    toggleMoviePage();
   }
 }
 
