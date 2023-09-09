@@ -23,7 +23,7 @@
             >
               <button
                 class="cursor-pointer"
-                @click="showProfile = true"
+                @click="openProfileWindow"
               >
                 Profile
               </button>
@@ -76,6 +76,11 @@
     :show="showSignup"
     @close="showSignup = false"
   />
+
+  <ProfileWindow
+    :show="store.showProfile"
+    @close="store.showProfile = false"
+  />
 </template>
 
 <script setup>
@@ -84,10 +89,15 @@ import TheBurger from '@/components/ui/TheBurger.vue';
 import LoginWindow from '@/components/layout/windows/LoginWindow.vue';
 import SignupWindow from '@/components/layout/windows/SignupWindow.vue';
 import { useMoviesStore } from '@/stores/movies.js';
+import ProfileWindow from '@/components/layout/windows/ProfileWindow.vue';
 
 const showMenu = ref(false);
 const showSignup = ref(false);
-const showProfile = ref(false);
 
 const store = useMoviesStore();
+
+function openProfileWindow() {
+  store.profileWindowUser = store.currentUser;
+  store.showProfile = true
+}
 </script>

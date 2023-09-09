@@ -7,6 +7,8 @@ export const useMoviesStore = defineStore('movies', {
         movies: [],
         currentUser: null,
         showLogin: false,
+        profileWindowUser: null,
+        showProfile: false,
     }),
 
     actions: {

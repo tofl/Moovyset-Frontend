@@ -1,12 +1,12 @@
 <template>
   <div
     class="flex flex-col-reverse lg:flex-row h-screen z-10 bg-no-repeat bg-cover"
-    :style="`background-image: url('${movie.posterUrl}')`"
+    :style="`background-image: url('${props.movie.posterUrl}')`"
   >
     <div
       class="hidden lg:block duration-200 ease-out bg-no-repeat bg-cover"
       :class="{ 'grow-0': isFullPage, 'grow': !isFullPage }"
-      :style="`background-image: url('${movie.posterUrl}')`"
+      :style="`background-image: url('${props.movie.posterUrl}')`"
     >
     </div>
 
@@ -43,18 +43,18 @@
                   >
                     Free
                 </span>
-                {{ movie.name }}
+                {{ props.movie.name }}
               </h2>
 
               <!-- Full movie (free movie) - Mobile -->
               <div
-                v-if="isFullPage && movie.freeToWatch"
+                v-if="isFullPage && props.movie.freeToWatch"
                 class="relative h-0 overflow-hidden max-w-full w-full mb-4 lg:hidden"
                 style="padding-bottom: 56.25%"
               >
                 <iframe
                   class="absolute top-0 left-0 w-full h-full"
-                  :src="`https://www.youtube-nocookie.com/embed/${videoId(movie.watch.url)}?&amp;controls=0`"
+                  :src="`https://www.youtube-nocookie.com/embed/${videoId(props.movie.watch.url)}?&amp;controls=0`"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
@@ -63,24 +63,24 @@
 
               <!-- Genres -->
               <p class="px-6 lg:px-0 mb-3 font-bold text-xl">
-                {{ movie.year }} |
+                {{ props.movie.year }} |
                 <span
-                  v-for="(genre, i) in movie.genres"
+                  v-for="(genre, i) in props.movie.genres"
                   :key="genre"
                 >
-                  {{ genre }}{{ i < movie.genres.length - 1 ? ', ' : '' }}
+                  {{ genre }}{{ i < props.movie.genres.length - 1 ? ', ' : '' }}
                 </span>
               </p>
 
-              <p class="px-8 lg:px-0 mb-3 text-justify text-lg text-gray-300 italic">{{ movie.description }}</p>
+              <p class="px-8 lg:px-0 mb-3 text-justify text-lg text-gray-300 italic">{{ props.movie.description }}</p>
 
               <!-- Actors -->
               <p class="px-6 mb-6 lg:px-0 font-bold text-lg">
                 <span
-                  v-for="(actor, i) in movie.actors"
+                  v-for="(actor, i) in props.movie.actors"
                   :key="actor"
                 >
-                  {{ actor }}{{ i < movie.actors.length - 1 ? ', ' : '' }}
+                  {{ actor }}{{ i < props.movie.actors.length - 1 ? ', ' : '' }}
                 </span>
               </p>
             </div>
@@ -109,7 +109,7 @@
               >
                 <iframe
                   class="absolute top-0 left-0 w-full h-full"
-                  :src="`https://www.youtube-nocookie.com/embed/${videoId(movie.watch ? movie.watch.url : movie.trailer.url)}`"
+                  :src="`https://www.youtube-nocookie.com/embed/${videoId(props.movie.watch ? props.movie.watch.url : props.movie.trailer.url)}`"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
@@ -118,7 +118,7 @@
             </div>
 
             <!-- Reviews -->
-            <TheReviews :movie-id="movie.id" />
+            <TheReviews :movie-id="props.movie.id" />
           </div>
         </div>
 
@@ -139,14 +139,13 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onUpdated, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMoviesStore } from '@/stores/movies.js';
 import Chevron from '@/components/ui/TheChevron.vue';
 import TheReviews from '@/components/layout/TheReviews.vue';
 
 const props = defineProps(['movie']);
-const movie = props.movie;
 
 const router = useRouter();
 const store = useMoviesStore();
@@ -156,7 +155,7 @@ const isFullPage = ref(false);
 
 onBeforeMount(() => {
   if (!store.decade) {
-    store.decade = Math.floor(parseInt(movie.year) / 10) * 10;
+    store.decade = Math.floor(parseInt(props.movie.year) / 10) * 10;
     document.getElementById(store.decade).scrollIntoView();
   }
 
@@ -172,13 +171,13 @@ async function toggleMoviePage() {
     window.history.pushState({}, '', `/`);
 
     if (!store.movies.length) {
-      store.movies.unshift(movie);
+      store.movies.unshift(props.movie);
       await store.fetchMovies();
     }
 
     setTimeout(() => router.push('/'), 210);
   } else {
-    window.history.pushState({}, '', `/m/${movie.slug}`);
+    window.history.pushState({}, '', `/m/${props.movie.slug}`);
     isFullPage.value = true;
   }
 }

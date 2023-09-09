@@ -26,7 +26,12 @@
         :key="review.id"
         class="mb-4 text-justify"
       >
-        <p class="text-main-red text-lg">{{ review.user.username }}</p>
+        <p
+          class="text-main-red text-lg cursor-pointer"
+          @click="toggleProfile(review.user)"
+        >
+          {{ review.user.username }}
+        </p>
         <p class="break-words">{{ review.review }}</p>
       </div>
     </div>
@@ -41,7 +46,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useMoviesStore } from '@/stores/movies.js';
 import NewReviewWindow from '@/components/layout/windows/NewReviewWindow.vue';
 
@@ -56,10 +61,19 @@ const store = useMoviesStore();
 const showNewReviewModal = ref(false);
 let reviews = ref([]);
 
+function toggleProfile(p) {
+  store.profileWindowUser = p;
+  store.showProfile = true;
+}
+
 async function getReviews() {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/reviews?from=0&count=100&movieId=${props.movieId}`);
   reviews.value = await response.json();
 }
+
+watch(() => props.movieId, () => {
+  getReviews();
+});
 
 onMounted(() => {
   getReviews();

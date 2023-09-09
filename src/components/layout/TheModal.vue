@@ -7,9 +7,9 @@
     >
       <div class="mx-3 sm:mx-6 mt-2">
         <div class="flex justify-between text-main-red font-bold">
-          <div class="text-2xl">
+          <h2 class="text-3xl">
             <slot name="header"></slot>
-          </div>
+          </h2>
 
           <div>
             <CloseButton
