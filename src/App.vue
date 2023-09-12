@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen">
+  <div class="h-screen" style="height: 100svh">
     <TheHeader />
 
     <RouterView />

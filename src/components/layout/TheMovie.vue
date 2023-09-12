@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex flex-col-reverse lg:flex-row h-screen z-10 bg-no-repeat bg-cover"
-    :style="`background-image: url('${props.movie.posterUrl}')`"
+    :style="`background-image: url('${props.movie.posterUrl}'); height: 100svh`"
   >
     <div
       class="hidden lg:block duration-200 ease-out bg-no-repeat bg-cover"
@@ -51,7 +51,7 @@
               </h2>
               <h3
                 v-if="!movie.freeToWatch"
-                class="mb-4 underline"
+                class="px-6 lg:px-0 mb-4 underline"
               >
                 <a
                   :href="movie.purchase.url"
